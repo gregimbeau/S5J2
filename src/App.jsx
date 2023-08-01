@@ -9,6 +9,29 @@ const App = () => {
     () => JSON.parse(localStorage.getItem("notes")) || []
   );
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  useEffect(() => {
+    const checkWindowWidth = () => {
+      if (window.innerWidth >= 769) {
+        setIsMenuOpen(true);
+      } else {
+        setIsMenuOpen(false);
+      }
+    };
+    // Exécuter la fonction une fois au chargement du composant
+    checkWindowWidth();
+    // Ajouter l'écouteur d'événements
+    window.addEventListener("resize", checkWindowWidth);
+    // Supprimer l'écouteur d'événements lorsque le composant est démonté
+    return () => {
+      window.removeEventListener("resize", checkWindowWidth);
+    };
+  }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   const deleteNote = () => {
     const updatedNotes = notes.filter((note) => note.id !== currentNote.id);
     setNotes(updatedNotes);
@@ -37,14 +60,19 @@ const App = () => {
     setCurrentNote(newNote);
   };
 
-  const selectNote = (id) => {
-    if (currentNote.id === id) {
-      setCurrentNote({ id: "", title: "", content: "" });
-    } else {
-      const note = notes.find((note) => note.id === id);
-      setCurrentNote(note);
-    }
-  };
+const selectNote = (id) => {
+  if (currentNote.id === id) {
+    setCurrentNote({ id: "", title: "", content: "" });
+  } else {
+    const note = notes.find((note) => note.id === id);
+    setCurrentNote(note);
+  }
+  // Si le menu est ouvert, le fermer lorsqu'une note est sélectionnée
+  if (isMenuOpen && window.innerWidth < 769) {
+    toggleMenu();
+  }
+};
+
 
   const saveNote = ({ title, content }) => {
     const updatedNotes = notes.map((note) => {
@@ -85,18 +113,25 @@ const App = () => {
   };
 
   return (
-    <div className='app'>
-      <div className='sidebar'>
-        <button className='export-button' onClick={exportNotes}>
-          Exporter les notes
-        </button>
-        <NoteList
-          notes={notes}
-          onSelectNote={selectNote}
-          onAddNote={addNote}
-          currentNoteId={currentNote.id}
-        />
-      </div>
+    <div className={`app ${isMenuOpen ? "menu-open" : "menu-closed"}`}>
+      <button className='hamburger' onClick={toggleMenu}>
+        <div className='hamburger-line'></div>
+        <div className='hamburger-line'></div>
+        <div className='hamburger-line'></div>
+      </button>
+      {isMenuOpen && (
+        <div className={`sidebar ${isMenuOpen ? "open" : ""}`}>
+          <button className='export-button' onClick={exportNotes}>
+            Exporter les notes
+          </button>
+          <NoteList
+            notes={notes}
+            onSelectNote={selectNote}
+            onAddNote={addNote}
+            currentNoteId={currentNote.id}
+          />
+        </div>
+      )}
       <div className='content'>
         {currentNote.id !== "" ? (
           <>
