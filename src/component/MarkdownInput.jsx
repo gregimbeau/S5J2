@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 
 const MarkdownInput = ({
   saveNote,
   deleteNote,
   content: initialContent,
   title: initialTitle,
+  noteSelected,
 }) => {
   const [content, setContent] = useState(initialContent);
   const [title, setTitle] = useState(initialTitle);
+  const TextareaAutosizeRef = useRef();
 
   useEffect(() => {
     setContent(initialContent);
     setTitle(initialTitle);
   }, [initialContent, initialTitle]);
+
+  if (!noteSelected) {
+    return null; // Si aucune note n'est sélectionnée, le composant ne rend rien
+  }
 
   const handleContentChange = (e) => {
     setContent(e.target.value);
@@ -32,6 +39,16 @@ const MarkdownInput = ({
     deleteNote(); // Appel de la fonction deleteNote quand le bouton est cliqué
   };
 
+  const insertTag = (tag) => {
+    const startTag = tag;
+    const endTag = tag.split("").reverse().join(""); // Inverse du tag pour la fermeture (marche pour ** et *)
+    const { selectionStart, selectionEnd } = TextareaAutosizeRef.current;
+    const textBefore = content.substring(0, selectionStart);
+    const textAfter = content.substring(selectionEnd);
+    const textSelection = content.substring(selectionStart, selectionEnd);
+    setContent(textBefore + startTag + textSelection + endTag + textAfter);
+  };
+
   return (
     <div className='markdown-input'>
       <input
@@ -41,11 +58,17 @@ const MarkdownInput = ({
         placeholder='Titre'
         className='note-input' // Ajoutez la classe .note-input ici
       />
-      <textarea
+      <div className='button-group'>
+        <button onClick={() => insertTag("**")}>Bold</button>
+        <button onClick={() => insertTag("*")}>Italic</button>
+        <button onClick={() => insertTag("[Link](url)")}>Link</button>
+      </div>
+      <TextareaAutosize
+        ref={TextareaAutosizeRef}
         value={content}
         onChange={handleContentChange}
         placeholder='Contenu'
-        className='note-input' // Ajoutez la classe .note-input ici
+        className='note-input textarea' // Ajoutez la classe .note-input ici
       />
       <button className='save' onClick={handleSave}>
         Save

@@ -35,7 +35,7 @@ const App = () => {
   }, [notes]);
 
   const addNote = () => {
-    const newNote = { id: uuidv4(), title: "Untitled", content: "" };
+    const newNote = { id: uuidv4(), title: "", content: "" };
     setNotes([newNote, ...notes]);
     setCurrentNote(newNote);
   };
@@ -74,12 +74,13 @@ const App = () => {
         />
       </div>
       <div className='content'>
-        <NoteDisplay htmlContent={htmlContent} />
+        <NoteDisplay title={currentNote.title} htmlContent={htmlContent} />
         <MarkdownInput
           saveNote={saveNote}
-          deleteNote={deleteNote} // ajouter cette ligne
+          deleteNote={deleteNote}
           content={currentNote.content}
           title={currentNote.title}
+          noteSelected={currentNote.id !== ""}
         />
       </div>
     </div>

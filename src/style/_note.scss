@@ -1,18 +1,87 @@
-// _note.scss
+@import "./variables";
+@import "./mixins";
 
 .note-input {
   width: 95%;
   margin: 0 auto;
-  padding: 8px; // Ajoutez le padding souhaité ici
+  padding: 8px;
+  background-color: $inputBgColor;
+  color: white;
+}
+.note-input.textarea {
+  height: 200px;
 }
 
 .markdown-input {
-  display: flex;
+  flex: 1;
+  overflow: auto;
   flex-direction: column;
   align-items: center;
 }
 
-/* Ajoutez un peu de marge entre le champ du titre et le champ de contenu */
 .markdown-input input {
   margin-bottom: 8px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  margin-bottom: 8px;
+
+  button {
+    flex: 1;
+    margin: 0 4px;
+  }
+}
+
+.note-display {
+  flex: 1;
+  overflow: auto;
+  width: 100%;
+  height: 30%;
+  border-bottom: 1px solid $sidebarColor;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+  h2 {
+    color: $noteTitleColor;
+  }
+}
+
+.note-edit {
+  width: 100%;
+  height: 200% !important;
+}
+
+.note-edit input,
+.note-edit textarea {
+  width: 100%;
+  padding: 0.5em;
+  background-color: $inputBgColor;
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  border-radius: 4px;
+  border: 1px solid $sidebarColor;
+  color: $defaultTextColor;
+}
+
+.note-input::-webkit-input-placeholder,
+.note-input.textarea::-webkit-input-placeholder {
+  color: $defaultTextColor;
+}
+
+.delete {
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  margin-top: 1em;
+  background-color: $deleteButtonBgColor;
+  color: $buttonTextColor;
+  border: none;
+  cursor: pointer;
+  @include transition(background-color);
+
+  &:hover {
+    background-color: $deleteButtonHoverBgColor;
+  }
 }

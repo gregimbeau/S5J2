@@ -3,6 +3,7 @@ import React from "react";
 const NoteList = ({ notes, onSelectNote, onAddNote, currentNoteId }) => {
   return (
     <div className='note-list'>
+      <button onClick={onAddNote}>Ajouter une note</button>
       {notes.map((note) => (
         <div
           key={note.id}
@@ -14,7 +15,6 @@ const NoteList = ({ notes, onSelectNote, onAddNote, currentNoteId }) => {
           <p>{note.content.slice(0, 15)}</p>
         </div>
       ))}
-      <button onClick={onAddNote}>Ajouter une note</button>
     </div>
   );
 };
