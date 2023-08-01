@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const MarkdownInput = ({
   saveNote,
+  deleteNote,
   content: initialContent,
   title: initialTitle,
 }) => {
   const [content, setContent] = useState(initialContent);
   const [title, setTitle] = useState(initialTitle);
+
+  useEffect(() => {
+    setContent(initialContent);
+    setTitle(initialTitle);
+  }, [initialContent, initialTitle]);
 
   const handleContentChange = (e) => {
     setContent(e.target.value);
@@ -16,11 +22,15 @@ const MarkdownInput = ({
     setTitle(e.target.value);
   };
 
-const handleSave = () => {
-  console.log("Saving", { title, content }); // Add this line
-  saveNote({ title, content });
-};
+  const handleSave = () => {
+    console.log("Saving", { title, content }); // Add this line
+    saveNote({ title, content });
+  };
 
+  const handleDelete = () => {
+    console.log("Deleting", { title, content });
+    deleteNote(); // Appel de la fonction deleteNote quand le bouton est cliqué
+  };
 
   return (
     <div className='markdown-input'>
@@ -40,6 +50,9 @@ const handleSave = () => {
       <button className='save' onClick={handleSave}>
         Save
       </button>
+      <button className='delete' onClick={handleDelete}>
+        Effacer la note
+      </button>{" "}
     </div>
   );
 };

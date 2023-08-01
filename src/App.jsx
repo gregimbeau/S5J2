@@ -11,6 +11,18 @@ const App = () => {
   const [notes, setNotes] = useState(
     () => JSON.parse(localStorage.getItem("notes")) || []
   );
+
+  const deleteNote = () => {
+    const updatedNotes = notes.filter((note) => note.id !== currentNote.id);
+    setNotes(updatedNotes);
+
+    if (updatedNotes.length > 0) {
+      setCurrentNote(updatedNotes[0]);
+    } else {
+      setCurrentNote({ id: "", title: "", content: "" });
+    }
+  };
+
   const [currentNote, setCurrentNote] = useState({
     id: "",
     title: "",
@@ -54,12 +66,18 @@ const App = () => {
   return (
     <div className='app'>
       <div className='sidebar'>
-        <NoteList notes={notes} onSelectNote={selectNote} onAddNote={addNote} />
+        <NoteList
+          notes={notes}
+          onSelectNote={selectNote}
+          onAddNote={addNote}
+          currentNoteId={currentNote.id}
+        />
       </div>
       <div className='content'>
         <NoteDisplay htmlContent={htmlContent} />
         <MarkdownInput
           saveNote={saveNote}
+          deleteNote={deleteNote} // ajouter cette ligne
           content={currentNote.content}
           title={currentNote.title}
         />
