@@ -39,21 +39,16 @@ const MarkdownInput = ({
     deleteNote(); // Appel de la fonction deleteNote quand le bouton est cliqué
   };
 
-  const insertTag = (tag) => {
-    const startTag = tag;
-    const endTag = tag.split("").reverse().join(""); // Inverse du tag pour la fermeture (marche pour ** et *)
-    const { selectionStart, selectionEnd } = TextareaAutosizeRef.current;
-    const textBefore = content.substring(0, selectionStart);
-    const textAfter = content.substring(selectionEnd);
-    const textSelection = content.substring(selectionStart, selectionEnd);
-    setContent(textBefore + startTag + textSelection + endTag + textAfter);
-  };
-  const handleClick = (e) => {
-   
-    if (e.button === 0) {
-       console.log(e);
-    }
-}
+const insertTag = (tag, closeTag) => {
+  const startTag = tag;
+  const endTag = closeTag || tag.split("").reverse().join("");
+  const { selectionStart, selectionEnd } = TextareaAutosizeRef.current;
+  const textBefore = content.substring(0, selectionStart);
+  const textAfter = content.substring(selectionEnd);
+  const textSelection = content.substring(selectionStart, selectionEnd);
+  setContent(textBefore + startTag + textSelection + endTag + textAfter);
+};
+
   return (
     <div className='markdown-input'>
       <input
@@ -66,7 +61,7 @@ const MarkdownInput = ({
       <div className='button-group'>
         <button onClick={() => insertTag("**")}>Bold</button>
         <button onClick={() => insertTag("*")}>Italic</button>
-        <button onClick={() => insertTag("[Link](url)")}>Link</button>
+        <button onClick={() => insertTag("<u>", "</u>")}>Souligner</button>
       </div>
       <TextareaAutosize
         ref={TextareaAutosizeRef}
@@ -74,7 +69,6 @@ const MarkdownInput = ({
         onChange={handleContentChange}
         placeholder='Contenu'
         className='note-input textarea' // Ajoutez la classe .note-input ici
-        onClick={handleClick}
       />
       <button className='save' onClick={handleSave}>
         Save

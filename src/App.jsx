@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import MarkdownInput from "@/component/MarkdownInput";
 import NoteDisplay from "@/component//NoteDisplay";
 import NoteList from "@/component//NoteList";
-import Showdown from "showdown";
 import { v4 as uuidv4 } from "uuid";
-
-const converter = new Showdown.Converter();
 
 const App = () => {
   const [notes, setNotes] = useState(
@@ -40,14 +37,14 @@ const App = () => {
     setCurrentNote(newNote);
   };
 
-const selectNote = (id) => {
-  if (currentNote.id === id) {
-    setCurrentNote({ id: "", title: "", content: "" });
-  } else {
-    const note = notes.find((note) => note.id === id);
-    setCurrentNote(note);
-  }
-};
+  const selectNote = (id) => {
+    if (currentNote.id === id) {
+      setCurrentNote({ id: "", title: "", content: "" });
+    } else {
+      const note = notes.find((note) => note.id === id);
+      setCurrentNote(note);
+    }
+  };
 
   const saveNote = ({ title, content }) => {
     const updatedNotes = notes.map((note) => {
@@ -63,9 +60,7 @@ const selectNote = (id) => {
     setCurrentNote(updatedCurrentNote); // Set the updated current note
   };
 
-  const htmlContent = currentNote
-    ? converter.makeHtml(currentNote.content)
-    : "";
+  const htmlContent = currentNote.content;
 
   const exportNotes = () => {
     // Créer le contenu du fichier
@@ -88,11 +83,13 @@ const selectNote = (id) => {
     // Supprimer le lien quand le téléchargement est terminé
     URL.revokeObjectURL(link.href);
   };
-  
+
   return (
     <div className='app'>
       <div className='sidebar'>
-        <button className= "export-button" onClick={exportNotes}>Exporter les notes</button>
+        <button className='export-button' onClick={exportNotes}>
+          Exporter les notes
+        </button>
         <NoteList
           notes={notes}
           onSelectNote={selectNote}
