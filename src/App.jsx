@@ -40,10 +40,14 @@ const App = () => {
     setCurrentNote(newNote);
   };
 
-  const selectNote = (id) => {
+const selectNote = (id) => {
+  if (currentNote.id === id) {
+    setCurrentNote({ id: "", title: "", content: "" });
+  } else {
     const note = notes.find((note) => note.id === id);
     setCurrentNote(note);
-  };
+  }
+};
 
   const saveNote = ({ title, content }) => {
     const updatedNotes = notes.map((note) => {
@@ -74,14 +78,29 @@ const App = () => {
         />
       </div>
       <div className='content'>
-        <NoteDisplay title={currentNote.title} htmlContent={htmlContent} />
-        <MarkdownInput
-          saveNote={saveNote}
-          deleteNote={deleteNote}
-          content={currentNote.content}
-          title={currentNote.title}
-          noteSelected={currentNote.id !== ""}
-        />
+        {currentNote.id !== "" ? (
+          <>
+            <NoteDisplay title={currentNote.title} htmlContent={htmlContent} />
+            <MarkdownInput
+              saveNote={saveNote}
+              deleteNote={deleteNote}
+              content={currentNote.content}
+              title={currentNote.title}
+              noteSelected={currentNote.id !== ""}
+            />
+          </>
+        ) : (
+          <div className='note-message'>
+            <p>Votre Bloc-Note</p>
+            <p>
+              <img
+                src='https://i.ibb.co/n1MfzJ6/notepadred.png'
+                alt='Notepad'
+              />
+            </p>
+            <p>Sélectionnez une note pour l'afficher ici.</p>
+          </div>
+        )}
       </div>
     </div>
   );

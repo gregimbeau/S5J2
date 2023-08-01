@@ -31,6 +31,7 @@ body {
   overflow-y: auto;
   padding: 1em;
   box-sizing: border-box;
+  
 }
 
 .note-list > div {
@@ -52,8 +53,7 @@ body {
   background-color: $selectedNoteColor;
 }
 
-.note-list button,
-.save {
+.note-list button {
   display: block;
   width: 100%;
   padding: 0.5em;
@@ -69,18 +69,32 @@ body {
   }
 }
 
-.delete {
-  display: block;
-  width: 100%;
-  padding: 0.5em;
-  margin-top: 1em;
-  background-color: $deleteButtonBgColor;
-  color: black;
-  border: none;
-  cursor: pointer;
-  @include transition(background-color);
-
-  &:hover {
-    background-color: $deleteButtonHoverBgColor;
-  }
+.note-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 1.5em;
+  color: #333;
+  text-align: center;
+  background: #f6f8fa9a;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out 1;
+  animation-fill-mode: forwards;
 }
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.note-message img {
+  width: 150px;
+}
+
+
+
+
+
