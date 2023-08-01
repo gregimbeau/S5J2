@@ -1,0 +1,18 @@
+// _note.scss
+
+.note-input {
+  width: 95%;
+  margin: 0 auto;
+  padding: 8px; // Ajoutez le padding souhaité ici
+}
+
+.markdown-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Ajoutez un peu de marge entre le champ du titre et le champ de contenu */
+.markdown-input input {
+  margin-bottom: 8px;
+}
