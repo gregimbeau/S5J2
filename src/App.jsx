@@ -67,9 +67,32 @@ const selectNote = (id) => {
     ? converter.makeHtml(currentNote.content)
     : "";
 
+  const exportNotes = () => {
+    // Créer le contenu du fichier
+    let fileContent = "";
+    for (const note of notes) {
+      fileContent += `Titre: ${note.title}\n\n${note.content}\n\n---------------\n\n`;
+    }
+
+    // Créer un Blob avec le contenu du fichier
+    const blob = new Blob([fileContent], { type: "text/plain;charset=utf-8" });
+
+    // Créer un lien temporaire pour le téléchargement
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "notes_export.txt";
+
+    // Simuler un clic sur le lien pour déclencher le téléchargement
+    link.click();
+
+    // Supprimer le lien quand le téléchargement est terminé
+    URL.revokeObjectURL(link.href);
+  };
+  
   return (
     <div className='app'>
       <div className='sidebar'>
+        <button className= "export-button" onClick={exportNotes}>Exporter les notes</button>
         <NoteList
           notes={notes}
           onSelectNote={selectNote}

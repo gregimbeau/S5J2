@@ -48,7 +48,12 @@ const MarkdownInput = ({
     const textSelection = content.substring(selectionStart, selectionEnd);
     setContent(textBefore + startTag + textSelection + endTag + textAfter);
   };
-
+  const handleClick = (e) => {
+   
+    if (e.button === 0) {
+       console.log(e);
+    }
+}
   return (
     <div className='markdown-input'>
       <input
@@ -69,6 +74,7 @@ const MarkdownInput = ({
         onChange={handleContentChange}
         placeholder='Contenu'
         className='note-input textarea' // Ajoutez la classe .note-input ici
+        onClick={handleClick}
       />
       <button className='save' onClick={handleSave}>
         Save
